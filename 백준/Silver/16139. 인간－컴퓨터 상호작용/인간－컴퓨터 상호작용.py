@@ -1,21 +1,19 @@
 import sys
-from string import ascii_lowercase
-from collections import defaultdict
-
-
+import string
+ 
 s = input()
 q = int(input())
-
-# prefix_sum
-prefix_sum = defaultdict(list)
-for alpha in ascii_lowercase:
-    prefix_sum[alpha].append(0)
-    alpha_cnt = 0
+# 알파벳별 저장
+char_list = {}
+for char in string.ascii_lowercase:
+    char_list[char] = [0]
+    count = 0
     for i in range(len(s)):
-        if s[i] == alpha:
-            alpha_cnt += 1
-        prefix_sum[alpha].append(alpha_cnt)
-					
+        if s[i] == char:
+            count += 1
+        char_list[char].append(count)
+        
 for _ in range(q):
-    alpha, l, r = sys.stdin.readline().rstrip().split()
-    print(prefix_sum[alpha][int(r)+1] - prefix_sum[alpha][int(l)])
+    char, start, end = sys.stdin.readline().rstrip().split()
+    start, end = int(start), int(end)
+    print(char_list[char][end + 1] - char_list[char][start])
