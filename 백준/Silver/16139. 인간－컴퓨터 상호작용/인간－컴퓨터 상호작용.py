@@ -1,3 +1,4 @@
+import sys
 from string import ascii_lowercase
 from collections import defaultdict
 
@@ -16,5 +17,5 @@ for alpha in ascii_lowercase:
         prefix_sum[alpha].append(alpha_cnt)
 					
 for _ in range(q):
-    alpha, l, r = input().split()
+    alpha, l, r = sys.stdin.readline().rstrip().split()
     print(prefix_sum[alpha][int(r)+1] - prefix_sum[alpha][int(l)])
