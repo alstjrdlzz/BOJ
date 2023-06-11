@@ -1,49 +1,50 @@
 import sys
 
-def input(type_=str):
-	return type_(sys.stdin.readline().rstrip())
-def input_n(type_):
-	return list(map(type_, input().split()))
 
-def init_tree(tree, node, idx2node, arr, left, right):
-    if left == right:
-        tree[node] = arr[left]
-        idx2node[left] = node
+input = sys.stdin.readline
+
+def init(arr, tree, idx2node, node, start, end):
+    if start == end:
+        tree[node] = arr[start]
+        idx2node[start] = node # bottom-up 방식으로 update할 때 사용
         return tree[node]
-    
-    mid = (left + right) // 2
-    tree[node] = init_tree(tree, node*2, idx2node, arr, left, mid)\
-               + init_tree(tree, node*2+1, idx2node, arr, mid+1, right)
+    else:
+        mid = (start+end)//2
+        lsum = init(arr, tree, idx2node, node*2, start, mid)
+        rsum = init(arr, tree, idx2node, node*2+1, mid+1, end)
+        tree[node] = lsum + rsum
     return tree[node]
 
-def query_tree(tree, node, left, right, srt, end):
-    if right < srt or end < left:
-        return 0
-    if srt <= left and right <= end:
+def query(tree, node, start, end, left, right):
+    # LSER
+    if left <= start and end <= right:
         return tree[node]
+    # SELR or LRSE
+    if end < left or right < start:
+        return 0
     
-    mid = (left + right) // 2
-    return query_tree(tree, node*2, left, mid, srt, end)\
-         + query_tree(tree, node*2+1, mid+1, right, srt, end) 
-         
-def update_tree(tree, node, v):
-    diff = v - tree[node]
-    
+    mid = (start+end)//2
+    lsum = query(tree, node*2, start, mid, left, right)
+    rsum = query(tree, node*2+1, mid+1, end, left, right)
+    return lsum + rsum
+
+def update(tree, node, value):
+    diff = value - tree[node]
     while node > 0:
         tree[node] += diff
         node //= 2
 
-N, M, K = input_n(int)
-arr = [input(int) for _ in range(N)]
+# main
+n, m, k = map(int, input().split())
+arr = [int(input()) for _ in range(n)]
 
-tree = [0]*(4*N)
-idx2node = [0]*N
-init_tree(tree, 1, idx2node, arr, 0, N-1)
+tree = [0] * (4 * n)
+idx2node = [0] * n
+init(arr, tree, idx2node, 1, 0, n-1)
 
-for _ in range(M+K):
-    a, b, c = input_n(int)
-    
+for _ in range(m+k):
+    a, b, c = map(int, input().split())
     if a == 1:
-        update_tree(tree, idx2node[b-1], c)
-    else:
-        print(query_tree(tree, 1, 0, N-1, b-1, c-1))
+        update(tree, idx2node[b-1], c)
+    elif a == 2:
+        print(query(tree, 1, 0, n-1, b-1, c-1))
