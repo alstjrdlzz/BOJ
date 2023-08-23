@@ -2,7 +2,7 @@ import sys
 from collections import deque
 
 
-#input = sys.stdin.readline
+input = sys.stdin.readline
 
 dx = [0, 0, -1, 1]
 dy = [-1, 1, 0, 0]
@@ -32,7 +32,7 @@ def bfs(a, b):
 n = int(input())
 graph = []
 for _ in range(n):
-    graph.append(list(map(int, input())))
+    graph.append(list(map(int, input().strip())))
     
 answer = []
 for i in range(n):
