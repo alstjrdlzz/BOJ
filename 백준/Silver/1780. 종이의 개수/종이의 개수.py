@@ -21,5 +21,5 @@ board = [list(map(int, input().split())) for _ in range(n)]
 
 nona_tree(0, 0, n)
 
-for key in result.keys():
+for key in (-1, 0, 1):
     print(result[key])
