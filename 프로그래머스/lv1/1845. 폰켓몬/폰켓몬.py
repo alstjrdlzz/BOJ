@@ -1,5 +1,6 @@
-def solution(nums):
-    nhalf = len(nums) // 2
-    nunique = len(set(nums))
-    
-    return min(nunique, nhalf)
+import collections
+
+def solution(num):
+    answer = int(min(len(num)/2 , len(list(collections.Counter(num)))))
+
+    return answer
