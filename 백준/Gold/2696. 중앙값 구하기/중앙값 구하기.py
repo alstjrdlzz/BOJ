@@ -10,18 +10,18 @@ def solution(S):
     medians = [median]
     for i in range(1, len(S)):
         x = S[i]
-        if x > median:
-            heapq.heappush(big, x)
+        if x <= median:
+            heapq.heappush(small, -x)
         else:
-            heapq.heappush(small, (-x, x))
+            heapq.heappush(big, x)
         
         if i % 2 == 0:
             if len(small) < len(big):
-                heapq.heappush(small, (-median, median))
+                heapq.heappush(small, -median)
                 median = heapq.heappop(big)
             elif len(small) > len(big):
                 heapq.heappush(big, median)
-                median = heapq.heappop(small)[1]
+                median = -heapq.heappop(small)
             medians.append(median)
     return medians
          
