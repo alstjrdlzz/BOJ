@@ -20,8 +20,7 @@ def solution(power):
     
 n, m = map(int, input().split())
 
-names = []
-thresholds = []
+names, thresholds = [], []
 for _ in range(n):
     data = input().split()
     names.append(data[0])
