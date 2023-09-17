@@ -28,4 +28,4 @@ def solution(start, end):
 n, m = map(int, input().split())
 trees = list(map(int, input().split()))
 
-print(solution(1, max(trees)))
+print(solution(0, max(trees)))
