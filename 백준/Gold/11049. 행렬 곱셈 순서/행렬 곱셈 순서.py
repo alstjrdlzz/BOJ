@@ -1,18 +1,23 @@
 import sys
-N = int(input())
-arr = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+input = sys.stdin.readline
+INF = 2 ** 31
 
-dp = [[0]*(N) for _ in range(N)]
 
-for term in range(1, N):
-    for start in range(N):
-        if start + term == N:
-            break
+n = int(input())
+s = [list(map(int, input().split())) for _ in range(n)]
 
-        dp[start][start+term] = int(1e9)
-        
-        for t in range(start, start+term):
-            dp[start][start+term] = min(dp[start][start+term],
-                                        dp[start][t]+dp[t+1][start+term] + arr[start][0] * arr[t][1] * arr[start+term][1])
+dp = [[INF] * n for _ in range(n)]
 
-print(dp[0][N-1])
+for i in range(n):
+    dp[i][i] = 0
+    
+for i in range(n - 1, -1, -1):
+    for j in range(i + 1, n):
+        dist = j - i
+        for k in range(dist):
+            dp[i][j] = min(
+                dp[i][j],
+                dp[i][i + k] + dp[i + k + 1][j] + s[i][0] * s[i + k][1] * s[j][1]
+            )
+            
+print(dp[0][-1])
