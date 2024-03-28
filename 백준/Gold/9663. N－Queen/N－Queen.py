@@ -1,31 +1,23 @@
-def n_queens(i, col):
-    global answer
-    n = len(col) - 1
-    if (promising(i, col)):
-        if (i == n):
-            answer += 1
-            return
-        else:
-            for j in range(1, n + 1):
-                col[i + 1] = j
-                n_queens(i + 1, col)
+import sys
+input = sys.stdin.readline
 
-def promising(i, col):
-    k = 1
-    flag = True
-    while (k < i and flag):
-        if (col[i] == col[k]) or (abs(col[i] - col[k]) == i - k):
-            flag = False
-        k += 1
-    return flag
-
-
-n = int(input())
-n2answer = {13:73712, 14:365596, 15:2279184}
-if n >= 13:
-    print(n2answer[n])
-else:
-    col = [0] * (n + 1)
-    answer = 0
-    n_queens(0, col)
-    print(answer)
+def dfs(n):
+		global ans
+		if n == N: # 종료조건
+				ans += 1 # 정답처리: 경우의수 + 1
+				return
+		# 하부단계 호출
+		for j in range(N):
+				if v1[j] ==  v2[n + j] == v3[n - j] == 0:
+						v1[j] = v2[n + j] = v3[n - j] = 1
+						dfs(n + 1)
+						v1[j] = v2[n + j] = v3[n - j] = 0
+						
+						
+N = int(input())
+ans = 0
+v1 = [0] * N
+v2 = [0] * (2 * N)
+v3 = [0] * (2 * N)
+dfs(0)
+print(ans)
