@@ -1,17 +1,16 @@
 import sys
 input = sys.stdin.readline
-INF = float("-inf")
 
 
-def solution(n, s):
-    d = [INF] * (n + 1)
-    d[0] = s[0]
-    for i in range(1, n):
-        d[i] = max(s[i], d[i-1] + s[i])
-    return max(d)
+N = int(input())
+lst = [0] + list(map(int, input().split()))
 
+dp = [0] * (N + 1)
 
-n = int(input())
-s = list(map(int, input().split()))
-
-print(solution(n, s))
+if max(lst[1:]) < 0:
+    ans = max(lst[1:])
+else:
+    for i in range(1, N + 1):
+        dp[i] = max(0, dp[i - 1] + lst[i])
+    ans = max(dp[1:])
+print(ans)
