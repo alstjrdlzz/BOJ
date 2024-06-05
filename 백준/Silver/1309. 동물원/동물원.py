@@ -3,10 +3,11 @@ input = sys.stdin.readline
 
 N = int(input())
 
-n0 = 1
-n1 = 2
-for _ in range(1, N):
-    n0, n1 = (n0 + n1), (2 * n0 + n1)
+dp = [[0] * 2 for _ in range(N + 1)]
 
-ans = n0 + n1
-print(ans%9901)
+dp[1] = [1, 2]
+for i in range(2, N + 1):
+    dp[i][0] = (dp[i - 1][0] + dp[i - 1][1]) % 9901            # 안 놓는 경우
+    dp[i][1] = (2 * dp[i - 1][0] + dp[i - 1][1]) % 9901        # 한 마리 놓는 경우
+    
+print(sum(dp[N]) % 9901)
