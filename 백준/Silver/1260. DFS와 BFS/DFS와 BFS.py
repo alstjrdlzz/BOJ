@@ -1,44 +1,50 @@
 import sys
-sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
 from collections import deque
 
-
-input = sys.stdin.readline
-
-
-def dfs(v):
-    visited[v] = 1
-    print(v, end=" ")
-    for i in graph[v]:
-        if visited[i] == 0:
-            visited[i] = 1
-            dfs(i)
-
-
-def bfs(v):
-    queue = deque([v])
-    visited[v] = 1
-    while queue:
-        v = queue.popleft()
-        print(v, end=" ")
-        for i in graph[v]:
-            if visited[i] == 0:
-                visited[i] = 1
-                queue.append(i)
-
-n, m, r = map(int, input().split())
-
-graph = [[] for _ in range(n + 1)]
-for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
+def dfs(c):
+    ans_dfs.append(c)    # 방문 노드 추가
+    v[c] = 1             # 방문 표시
     
-for i in range(1, n + 1):
-    graph[i].sort()
+    for n in adj[c]:
+        if not v[n]:     # 방문하지 않은 노드인 경우
+            dfs(n)
+            
+            
+def bfs(s):
+    q = deque([])              # 필요한 q, v[], 변수 생성
+    
+    q.append(s)         # q에 초기데이터 삽입
+    ans_bfs.append(s)
+    v[s] = 1
+    
+    while q:
+        c = q.popleft()
+        for n in adj[c]:
+            if not v[n]:    # 방문하지 않은 노드인 경우 -> q에 삽입
+                q.append(n)
+                ans_bfs.append(n)
+                v[n] = 1
+                
 
-visited = [0] * (n + 1)
-dfs(r)
-print()
-visited = [0] * (n + 1)
-bfs(r)
+N, M, V = map(int, input().split())
+adj = [[] for _ in range(N + 1)]
+for _ in range(M):
+    s, e = map(int, input().split())
+    adj[s].append(e)
+    adj[e].append(s)    # 양방향
+    
+# [1] 오름차순 정렬
+for i in range(1, N + 1):
+    adj[i].sort()
+
+v = [0] * (N + 1)
+ans_dfs = []
+dfs(V)
+
+v = [0] * (N + 1)
+ans_bfs = []
+bfs(V)
+
+print(*ans_dfs)
+print(*ans_bfs)
