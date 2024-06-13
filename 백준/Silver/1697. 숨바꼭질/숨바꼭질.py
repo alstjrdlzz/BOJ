@@ -1,37 +1,37 @@
 import sys
-from collections import deque
-
-
 input = sys.stdin.readline
+from collections import deque
 
 def fn1(x):
     return x - 1
 
-
 def fn2(x):
     return x + 1
-
 
 def fn3(x):
     return x * 2
 
-idx2fn = {0: fn1, 1: fn2, 2: fn3}
+fns = [fn1, fn2, fn3]
 
-def bfs(start): 
-    queue = deque([start])
-    while queue:
-        x = queue.popleft()
-        if x == k:
-            return graph[x]
-        for i in range(3):
-            nx = idx2fn[i](x)
-            if nx < 0 or nx > 10 ** 5:
-                continue
-            if graph[nx] == 0:
-                graph[nx] = graph[x] + 1
-                queue.append(nx)
+def bfs(s, e):
+    v = [0] * (10 ** 5 + 1)
+    q = deque([])
+    q.append(s)
+    v[s] = 1
+    
+    while q:
+        c = q.popleft()
+        if c == e:
+            return v[e] - 1
+        for fn in fns:
+            n = fn(c)
+            if 0 <= n < 10 ** 5 + 1:
+                if not v[n]:
+                    q.append(n)
+                    v[n] += v[c] + 1
+                
 
-n, k = map(int, input().split())
-graph = [0] * (10 ** 5 + 1)
+N, K = map(int, input().split())
 
-print(bfs(n))
+ans = bfs(N, K)
+print(ans)
