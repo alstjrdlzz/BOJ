@@ -1,26 +1,18 @@
 import sys
 input = sys.stdin.readline
-from collections import deque
 
-def bfs(sj, si, ej, ei):
-    q = deque([])
-    v = [0] * N
-    
-    q.append((sj, si))
-    
-    while q:
-        cj, ci = q.popleft()
-        if abs(cj - ej) + abs(ci - ei) <= 1000 :
-            return "happy"
+def dfs(cj, ci):
+    global ans
+    if abs(cj - ej) + abs(ci - ei) <= 1000:
+        ans = "happy"
+        return
         
-        for i in range(N):
-            if v[i] == 0:
-                nj, ni = lst[i]
-                if abs(cj - nj) + abs(ci - ni) <= 1000:
-                    q.append((nj, ni))
-                    v[i] = 1
-    return "sad"
-
+    for i in range(N):
+        if v[i] == 0:
+            nj, ni = lst[i]
+            if abs(cj - nj) + abs(ci - ni) <= 1000:
+                v[i] = 1
+                dfs(nj, ni)
 
 TC = int(input())
 for _ in range(TC):
@@ -31,5 +23,8 @@ for _ in range(TC):
         tj, ti = map(int, input().split())
         lst.append((tj, ti))
     ej, ei = map(int, input().split())
-    ans = bfs(sj, si, ej, ei)
+    
+    v = [0] * N
+    ans = "sad"
+    dfs(sj, si)
     print(ans)
