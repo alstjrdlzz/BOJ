@@ -11,9 +11,9 @@ h = []
 heapq.heappush(h, lst[0][1])
 
 for i in range(1, N):
-    if lst[i][0] < h[0]:         # 강의 시작시간이 빠르면 강의실 추가
+    if lst[i][0] < h[0]:             # T_top <= S_i --> 같이 들을 수 있음
         heapq.heappush(h, lst[i][1])
-    else:                           # 강의 시작시간이 늦으면 기존 강의실에서 강의
+    else:                            # 새로운 강의실에 배정
         heapq.heappop(h)
         heapq.heappush(h, lst[i][1])
         
