@@ -1,22 +1,20 @@
+import sys
+input = sys.stdin.readline
 import heapq
-n = int(input())
 
-q = []
+N = int(input())
+lst = [tuple(map(int, input().split())) for _ in range(N)]
 
-for i in range(n):
-    start, end = map(int, input().split())
-    q.append([start, end])
+lst.sort() # 시작시간이 빠른 순으로 정렬
 
-q.sort()
+h = []
+heapq.heappush(h, lst[0][1])
 
-room = []
-heapq.heappush(room, q[0][1])
-
-for i in range(1, n):
-    if q[i][0] < room[0]: # 현재 회의실 끝나는 시간보다 다음 회의 시작시간이 빠르면
-        heapq.heappush(room, q[i][1]) # 새로운 회의실 개설
-    else: # 현재 회의실에 이어서 회의 개최 가능
-        heapq.heappop(room) # 새로운 회의로 시간 변경을 위해 pop후 새 시간 push
-        heapq.heappush(room, q[i][1])
-
-print(len(room))
+for i in range(1, N):
+    if lst[i][0] < h[0]:         # 강의 시작시간이 빠르면 강의실 추가
+        heapq.heappush(h, lst[i][1])
+    else:                           # 강의 시작시간이 늦으면 기존 강의실에서 강의
+        heapq.heappop(h)
+        heapq.heappush(h, lst[i][1])
+        
+print(len(h))
