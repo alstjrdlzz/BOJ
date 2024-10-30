@@ -10,7 +10,7 @@ dp[2] = 2
 for i in range(3, N + 1):
     dp[i] = dp[i - 2] + dp[i - 1]
 
-if M > 0:
+if M:
     ans, start = 1, 0
     for end in lst:
         ans *= dp[end - start - 1]
